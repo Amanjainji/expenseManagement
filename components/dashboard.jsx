@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChart, LineChart, PieChart } from "@/components/ui/chart"
+import { BarChart, LineChart, PieChart } from "recharts"
 import { AlertTriangle, ArrowUpRight, DollarSign, TrendingUp } from "lucide-react"
 
 export default function Dashboard() {

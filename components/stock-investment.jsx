@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { LineChart } from "@/components/ui/chart"
+import { LineChart } from "recharts"
 import { Badge } from "@/components/ui/badge"
 import { TrendingUp, TrendingDown, AlertCircle } from "lucide-react"
 
