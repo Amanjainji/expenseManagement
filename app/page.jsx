@@ -1,108 +1,110 @@
 "use client"
-
 import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Bell, CreditCard, DollarSign, Users, Briefcase, TrendingUp } from "lucide-react"
-import Dashboard from "@/components/dashboard"
-import ExpenseManagement from "@/components/expense-management"
-import StockInvestment from "@/components/stock-investment"
-import LoanAnalysis from "@/components/loan-analysis"
-import Notifications from "@/components/notifications"
-import UserProfile from "@/components/user-profile"
-import ChatbotComponent from "@/components/chatbot"
+import PageHeader from "@/components/PageHeader"
+import TabNavigation from "@/components/TabNavigation"
+import StatCard from "@/components/StatCard"
+import InsightCard from "@/components/InsightCard"
+import ExpenseBreakdownChart from "@/components/charts/ExpenseBreakdownChart"
+import StockPortfolioChart from "@/components/charts/StockPortfolioChart"
+import LoanRepaymentChart from "@/components/charts/LoanRepaymentChart"
+import { AlertTriangle, TrendingUp, AlertCircle } from "lucide-react"
 
-export default function Home() {
-  const [showChatbot, setShowChatbot] = useState(false)
+// Mock data for charts
+const expenseData = [
+  { name: "Food", value: 150000 },
+  { name: "Travel", value: 100000 },
+  { name: "Office", value: 200000 },
+  { name: "Misc", value: 50000 },
+]
+
+const stockData = [
+  { name: "Jan", value: 500000, projected: 520000 },
+  { name: "Feb", value: 520000, projected: 540000 },
+  { name: "Mar", value: 540000, projected: 560000 },
+  { name: "Apr", value: 560000, projected: 580000 },
+  { name: "May", value: 580000, projected: 600000 },
+  { name: "Jun", value: 600000, projected: 620000 },
+  { name: "Jul", value: 620000, projected: 640000 },
+  { name: "Aug", value: 640000, projected: 660000 },
+  { name: "Sep", value: 660000, projected: 680000 },
+  { name: "Oct", value: 680000, projected: 700000 },
+  { name: "Nov", value: 700000, projected: 720000 },
+  { name: "Dec", value: 720000, projected: 740000 },
+]
+
+const loanData = [
+  { name: "Business Expansion", paid: 200000, remaining: 300000 },
+  { name: "Equipment Purchase", paid: 150000, remaining: 50000 },
+  { name: "Working Capital", paid: 100000, remaining: 100000 },
+]
+
+export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState("dashboard")
+
+  const tabs = [
+    { id: "dashboard", label: "Dashboard" },
+    { id: "expense", label: "Expense Management" },
+    { id: "stock", label: "Stock Investment" },
+    { id: "loan", label: "Loan Analysis" },
+    { id: "alerts", label: "Alerts" },
+    { id: "profile", label: "Profile" },
+  ]
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
-      <div className="hidden md:flex w-64 flex-col fixed inset-y-0 z-50 border-r bg-card">
-        <div className="p-6">
-          <h2 className="text-2xl font-bold">ExpenseAI</h2>
-        </div>
-        <nav className="flex-1 px-4 space-y-2">
-          <a href="#dashboard" className="flex items-center p-3 text-primary rounded-md hover:bg-accent">
-            <DollarSign className="mr-2 h-5 w-5" />
-            Dashboard
-          </a>
-          <a href="#expenses" className="flex items-center p-3 text-muted-foreground rounded-md hover:bg-accent">
-            <CreditCard className="mr-2 h-5 w-5" />
-            Expenses
-          </a>
-          <a href="#investments" className="flex items-center p-3 text-muted-foreground rounded-md hover:bg-accent">
-            <TrendingUp className="mr-2 h-5 w-5" />
-            Investments
-          </a>
-          <a href="#loans" className="flex items-center p-3 text-muted-foreground rounded-md hover:bg-accent">
-            <Briefcase className="mr-2 h-5 w-5" />
-            Loans
-          </a>
-          <a href="#alerts" className="flex items-center p-3 text-muted-foreground rounded-md hover:bg-accent">
-            <Bell className="mr-2 h-5 w-5" />
-            Alerts
-          </a>
-          <a href="#profile" className="flex items-center p-3 text-muted-foreground rounded-md hover:bg-accent">
-            <Users className="mr-2 h-5 w-5" />
-            Profile
-          </a>
-        </nav>
+    <div className="p-6">
+      <PageHeader title="Business Expense Management" />
+
+      <TabNavigation tabs={tabs} defaultTab="dashboard" onChange={setActiveTab} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <StatCard title="Total Expenses" value="₹500,000" subtitle="+15% from last month" />
+        <StatCard title="Investment Growth" value="+8%" subtitle="This quarter" />
+        <StatCard title="Loan Risk Score" value="750" subtitle="Good Credit" />
+        <StatCard title="Alerts" value="3" subtitle="Requires attention" />
       </div>
 
-      {/* Main content */}
-      <div className="flex-1 md:ml-64 p-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Business Expense Management</h1>
-          <button
-            onClick={() => setShowChatbot(!showChatbot)}
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
-          >
-            {showChatbot ? "Close Assistant" : "AI Assistant"}
-          </button>
-        </div>
+      <div className="mb-8">
+        <h2 className="text-xl font-bold mb-4">AI Insights</h2>
+        <p className="text-gray-600 mb-4">Smart recommendations based on your data</p>
 
-        <Tabs defaultValue="dashboard">
-          <TabsList className="mb-4">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="expenses">Expense Management</TabsTrigger>
-            <TabsTrigger value="investments">Stock Investment</TabsTrigger>
-            <TabsTrigger value="loans">Loan Analysis</TabsTrigger>
-            <TabsTrigger value="alerts">Alerts</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-          </TabsList>
+        <InsightCard
+          type="warning"
+          icon={<AlertTriangle size={20} />}
+          title="Your expenses increased by 15% this month."
+          description="Consider reviewing your spending in the Food category."
+        />
 
-          <TabsContent value="dashboard">
-            <Dashboard />
-          </TabsContent>
+        <InsightCard
+          type="success"
+          icon={<TrendingUp size={20} />}
+          title="Stock AI suggests investing in XYZ Ltd."
+          description="Our analysis shows a potential 12% growth in the next quarter."
+        />
 
-          <TabsContent value="expenses">
-            <ExpenseManagement />
-          </TabsContent>
-
-          <TabsContent value="investments">
-            <StockInvestment />
-          </TabsContent>
-
-          <TabsContent value="loans">
-            <LoanAnalysis />
-          </TabsContent>
-
-          <TabsContent value="alerts">
-            <Notifications />
-          </TabsContent>
-
-          <TabsContent value="profile">
-            <UserProfile />
-          </TabsContent>
-        </Tabs>
+        <InsightCard
+          type="danger"
+          icon={<AlertCircle size={20} />}
+          title="You may exceed your budget in Travel category."
+          description="Currently at 85% of monthly allocation with 10 days remaining."
+        />
       </div>
 
-      {/* Chatbot */}
-      {showChatbot && (
-        <div className="fixed bottom-4 right-4 w-96 h-[500px] bg-card border rounded-lg shadow-lg z-50">
-          <ChatbotComponent />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="card">
+          <h2 className="text-xl font-bold mb-4">Expense Breakdown</h2>
+          <ExpenseBreakdownChart data={expenseData} />
         </div>
-      )}
+
+        <div className="card">
+          <h2 className="text-xl font-bold mb-4">Stock Portfolio Trends</h2>
+          <StockPortfolioChart data={stockData} />
+        </div>
+
+        <div className="card">
+          <h2 className="text-xl font-bold mb-4">Loan Repayment Tracker</h2>
+          <LoanRepaymentChart data={loanData} />
+        </div>
+      </div>
     </div>
   )
 }
